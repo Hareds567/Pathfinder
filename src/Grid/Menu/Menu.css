@@ -1,0 +1,17 @@
+.main-menu-container {
+  display: flex;
+  gap: 2rem;
+  background-color: rgba(235, 235, 235, 0.788);
+}
+
+.main-menu-container button {
+  padding: 0.75rem;
+}
+
+.main-menu-container button:hover {
+  opacity: 0.7;
+}
+
+.button-active {
+  background-color: salmon;
+}

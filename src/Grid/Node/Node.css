@@ -1,0 +1,32 @@
+.node {
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  outline: 1px solid rgb(175, 216, 248);
+  margin: 0;
+}
+
+.node:hover {
+  opacity: 0.7;
+}
+
+.node-start {
+  background-color: rgb(63, 177, 63);
+}
+
+.node-end {
+  background-color: rgb(241, 137, 137);
+}
+
+.node-wall {
+  background-color: rgb(12, 53, 71);
+}
+.node-visited {
+  background-color: rgb(192, 176, 30);
+}
+.node-path {
+  background-color: rgb(142, 0, 170);
+}
+.node-final {
+  opacity: 0.5;
+}
