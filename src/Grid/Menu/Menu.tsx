@@ -10,9 +10,20 @@ interface props {
   set_grid: React.Dispatch<React.SetStateAction<Node[][]>>;
   start: number[];
   end: number[];
+  activeBtn: number;
+  set_activeBtn: React.Dispatch<React.SetStateAction<number>>;
+  checkActiveBtn: (id: number) => boolean;
 }
 
-const Menu: FC<props> = ({ grid, set_grid, start, end }) => {
+const Menu: FC<props> = ({
+  grid,
+  set_grid,
+  start,
+  end,
+  activeBtn,
+  checkActiveBtn,
+  set_activeBtn,
+}) => {
   const activeButton = React.useRef<React.LegacyRef<HTMLButtonElement>>();
 
   const generateMap = (wall: boolean = true) => {
@@ -57,14 +68,43 @@ const Menu: FC<props> = ({ grid, set_grid, start, end }) => {
     }
   };
 
+  React.useEffect(() => {
+    set_activeBtn(1);
+  }, []);
+
   return (
     <div className="main-menu-container">
       <div className="active-buttons">
-        <button>Pointer</button>
-        <button>Select Start</button>
-        <button>Select End</button>
-        <button>Draw Wall</button>
-        <button>Add Stop</button>
+        <button
+          className={`menuBtn ${checkActiveBtn(1) ? "button-active" : ""}`}
+          onClick={() => set_activeBtn(1)}
+        >
+          Pointer
+        </button>
+        <button
+          className={`menuBtn ${checkActiveBtn(2) ? "button-active" : ""}`}
+          onClick={() => set_activeBtn(2)}
+        >
+          Select Start
+        </button>
+        <button
+          className={`menuBtn ${checkActiveBtn(3) ? "button-active" : ""}`}
+          onClick={() => set_activeBtn(3)}
+        >
+          Select End
+        </button>
+        <button
+          className={`menuBtn ${checkActiveBtn(4) ? "button-active" : ""}`}
+          onClick={() => set_activeBtn(4)}
+        >
+          Draw Wall
+        </button>
+        <button
+          className={`menuBtn ${checkActiveBtn(5) ? "button-active" : ""}`}
+          onClick={() => set_activeBtn(5)}
+        >
+          Add Stop
+        </button>
       </div>
       <div className="grid-actions">
         <button

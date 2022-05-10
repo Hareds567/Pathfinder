@@ -37,6 +37,7 @@ const Content = () => {
     cleanGrid(grid);
 
     const results = aStar(grid[start[0]][start[1]], grid[end[0]][end[1]]);
+    console.log(results.result);
     if (results) {
       for (let i = 0; i < results.path.length; i++) {
         //Animate suitable path
@@ -101,11 +102,9 @@ const Content = () => {
       for (let column = 0; column < COLS; column++) {
         let tempNode = new Node(row, column, start, end, false);
         if (tempNode.x === start[0] && tempNode.y === start[1]) {
-          console.log("a");
           tempNode.isStart = true;
         }
         if (tempNode.x === end[0] && tempNode.y === end[1]) {
-          console.log("b");
           tempNode.isEnd = true;
         }
         currentRow.push(tempNode);
@@ -127,11 +126,43 @@ const Content = () => {
   }, []);
 
   React.useEffect(() => {
-    console.log(grid);
+    // console.log(grid);
   }, [grid]);
+
+  //Use State
+  const [activeBtn, set_activeBtn] = React.useState(1);
+  const checkActiveBtn = (id: number) => {
+    if (id === activeBtn) {
+      return true;
+    }
+    return false;
+  };
+
+  React.useEffect(() => {
+    if (activeBtn === 1) {
+    }
+    if (activeBtn === 2) {
+    }
+    if (activeBtn === 3) {
+    }
+    if (activeBtn === 4) {
+    }
+    if (activeBtn === 5) {
+    }
+    console.log(start);
+  }, [start]);
+
   return (
     <>
-      <Menu grid={grid} set_grid={set_grid} start={start} end={end} />
+      <Menu
+        grid={grid}
+        set_grid={set_grid}
+        start={start}
+        end={end}
+        activeBtn={activeBtn}
+        set_activeBtn={set_activeBtn}
+        checkActiveBtn={checkActiveBtn}
+      />
       <div className="menu-container">
         <button className="button" onClick={() => animate()}>
           Start
@@ -148,12 +179,18 @@ const Content = () => {
               {row.map((node, nodeIdx) => {
                 return (
                   <NodeComponent
+                    grid={grid}
+                    set_grid={set_grid}
+                    start={start}
+                    set_start={set_start}
+                    node={node}
                     key={nodeIdx}
                     col={node.y}
                     row={node.x}
                     isWall={node.isWall}
                     isStart={node.isStart}
                     isEnd={node.isEnd}
+                    activeBtn={activeBtn}
                   />
                 );
               })}
