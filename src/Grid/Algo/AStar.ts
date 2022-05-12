@@ -1,12 +1,14 @@
 import Node from "./Node";
-
 export interface Results {
   path: Node[];
   result: Node[]
 }
+let start:Node = new Node()
 
 //Start of the Algorithm
 export const aStar = (startNode: Node, finishNode: Node) => {
+
+  start = startNode
 
   let openSet = new Array<Node>();
   let closedSet = new Array<Node>();
@@ -18,7 +20,6 @@ export const aStar = (startNode: Node, finishNode: Node) => {
   //While there are elements in the open Set
   while (openSet.length > 0) {
     let current = openSet[findNodeWithLowestF(openSet)]
-
     //End Condition | We are at the finish Node
     if (current.x === finishNode.x && current.y === finishNode.y) {
       path.push(current);
@@ -90,7 +91,6 @@ const removeFromArray = (array: Array<any>, object: any) => {
 //Find Node with Lowest Index
 const findNodeWithLowestF = (arr: Node[]) => {
   let fIndex = 0
-
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].f < arr[fIndex].f) {
       fIndex = i
@@ -113,11 +113,14 @@ const heuristic = (a: Node, b: Node) => {
 }
 
 //Get the Optimal Path
-const getFinalPath = (end: Node, final?: Array<Node>):Array<Node> => {
-  let temp = final ? final : new Array<Node>()
-  if (!end.previous) {
-    return temp
+const getFinalPath = (end: Node): Array<Node> => {
+  let path = new Array<Node>()
+  let temp = end
+  while (temp.x !== start.x || temp.y !== start.y) {
+    if (temp.previous) {
+      path.push(temp.previous)
+      temp = temp.previous
+    }
   }
-  temp.push(end.previous)
-  return getFinalPath(end.previous,temp)
+  return path
 }

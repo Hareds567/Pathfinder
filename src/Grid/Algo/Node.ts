@@ -9,6 +9,7 @@ class Node {
   isWall: boolean;
   isStart: boolean;
   isEnd: boolean;
+  isSpot: boolean;
   start: Array<number> = []
   end: Array<number> = []
 
@@ -23,6 +24,7 @@ class Node {
     this.isWall = wall?this.prob():false;
     this.isStart = false;
     this.isEnd = false;
+    this.isSpot = false
 
   }
 

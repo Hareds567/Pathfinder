@@ -1,0 +1,46 @@
+.spot-container {
+  position: relative;
+  grid-area: spot;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  width: 90px;
+  /* outline: 1px solid royalblue; */
+  padding: 20px;
+}
+
+.spots {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.spot-container-start {
+  position: relative;
+  margin-bottom: 20px;
+}
+.spot-container-start::before {
+  content: " ";
+  position: absolute;
+  height: 1.5px;
+  width: 100%;
+  bottom: -10px;
+  left: 0;
+  background: greenyellow;
+}
+.spot-container-end {
+  position: relative;
+  margin-top: 20px;
+}
+
+.spot-container-end::before {
+  content: " ";
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  top: -10px;
+  left: 0;
+  background: greenyellow;
+}

@@ -10,7 +10,6 @@ import Content from "./Grid/Content";
 function App() {
   return (
     <div className="App">
-      {/* <Grid /> */}
       <Content />
     </div>
   );

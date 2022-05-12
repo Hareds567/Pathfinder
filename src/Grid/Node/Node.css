@@ -27,6 +27,9 @@
 .node-path {
   background-color: rgb(142, 0, 170);
 }
+.node-spot {
+  background-color: rgb(97, 97, 97);
+}
 .node-final {
   opacity: 0.5;
 }

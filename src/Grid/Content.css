@@ -1,25 +1,21 @@
+.content-main-container {
+  position: relative;
+  display: grid;
+
+  grid-template-areas:
+    "spot menu  "
+    "spot grid  "
+    "spot grid  "
+    "spot grid  ";
+  gap: 2rem;
+}
+
 .grid {
   display: grid;
   grid-template-rows: repeat(25, auto);
-  grid-template-columns: repeat(25, auto);
-  margin: 5rem 0;
+  grid-template-columns: repeat(40, auto);
 }
 
-.button {
-  display: inline-block;
-  width: 100%;
-  top: 10rem;
-  background-color: rgb(131, 124, 124);
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  border-radius: 5px;
-  margin: 0 1rem;
-}
-.button:hover {
-  opacity: 0.7;
-  cursor: pointer;
-}
 .menu-container {
   display: flex;
   justify-content: space-around;

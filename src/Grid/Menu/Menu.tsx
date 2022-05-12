@@ -6,6 +6,7 @@ import { ROWS, COLS } from "../Content";
 //CSS
 import "./Menu.css";
 interface props {
+  animate: () => void;
   grid: Node[][];
   set_grid: React.Dispatch<React.SetStateAction<Node[][]>>;
   start: number[];
@@ -16,6 +17,7 @@ interface props {
 }
 
 const Menu: FC<props> = ({
+  animate,
   grid,
   set_grid,
   start,
@@ -35,11 +37,9 @@ const Menu: FC<props> = ({
       for (let column = 0; column < COLS; column++) {
         let tempNode = new Node(row, column, start, end, wall);
         if (tempNode.x === start[0] && tempNode.y === start[1]) {
-          console.log("a");
           tempNode.isStart = true;
         }
         if (tempNode.x === end[0] && tempNode.y === end[1]) {
-          console.log("b");
           tempNode.isEnd = true;
         }
         currentRow.push(tempNode);
@@ -61,7 +61,12 @@ const Menu: FC<props> = ({
       for (let col = 0; col < grid[row].length; col++) {
         if (!grid[row][col].isWall) {
           let temp = document.getElementById(`node-${row}-${col}`);
-          if (grid[row][col].isStart || grid[row][col].isEnd) continue;
+          if (
+            grid[row][col].isStart ||
+            grid[row][col].isEnd ||
+            grid[row][col].isSpot
+          )
+            continue;
           if (temp) temp.className = "node";
         }
       }
@@ -114,14 +119,19 @@ const Menu: FC<props> = ({
         >
           Generate Random Map
         </button>
+        <button onClick={() => cleanGrid(grid)}>Clean Grid</button>
         <button
           onClick={() => {
             generateMap(false);
           }}
         >
-          Empty Grid
+          Reset
         </button>
-        <button onClick={() => cleanGrid(grid)}>Clean Grid</button>
+      </div>
+      <div>
+        <button className="button" onClick={() => animate()}>
+          Start
+        </button>
       </div>
     </div>
   );

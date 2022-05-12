@@ -1,10 +1,14 @@
 .main-menu-container {
   display: flex;
+  grid-area: menu;
+  align-content: center;
+  justify-content: center;
   gap: 2rem;
-  background-color: rgba(235, 235, 235, 0.788);
 }
 
 .main-menu-container button {
+  border: none;
+  outline: none;
   padding: 0.75rem;
 }
 
@@ -13,5 +17,23 @@
 }
 
 .button-active {
+  border: none;
+  outline: none;
   background-color: salmon;
+}
+
+.button {
+  display: inline-block;
+  width: 100%;
+  top: 10rem;
+  background-color: rgb(131, 124, 124);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 5px;
+  margin: 0 1rem;
+}
+.button:hover {
+  opacity: 0.7;
+  cursor: pointer;
 }
