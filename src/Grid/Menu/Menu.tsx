@@ -1,10 +1,11 @@
 import React, { FC } from "react";
 //Components
+import MazeMenu from "./MazeMenu/MazeMenu";
 //Classes
 import Node from "../Algo/Node";
-import { ROWS, COLS } from "../Content";
 //CSS
 import "./Menu.css";
+
 interface props {
   animate: () => void;
   grid: Node[][];
@@ -14,6 +15,7 @@ interface props {
   activeBtn: number;
   set_activeBtn: React.Dispatch<React.SetStateAction<number>>;
   checkActiveBtn: (id: number) => boolean;
+  set_spots: React.Dispatch<React.SetStateAction<Node[]>>;
 }
 
 const Menu: FC<props> = ({
@@ -25,54 +27,8 @@ const Menu: FC<props> = ({
   activeBtn,
   checkActiveBtn,
   set_activeBtn,
+  set_spots,
 }) => {
-  const activeButton = React.useRef<React.LegacyRef<HTMLButtonElement>>();
-
-  const generateMap = (wall: boolean = true) => {
-    cleanGrid(grid);
-    let temp = new Array<Node[]>();
-    //Create Grid without Neighbors
-    for (let row = 0; row < ROWS; row++) {
-      let currentRow = new Array<Node>();
-      for (let column = 0; column < COLS; column++) {
-        let tempNode = new Node(row, column, start, end, wall);
-        if (tempNode.x === start[0] && tempNode.y === start[1]) {
-          tempNode.isStart = true;
-        }
-        if (tempNode.x === end[0] && tempNode.y === end[1]) {
-          tempNode.isEnd = true;
-        }
-        currentRow.push(tempNode);
-      }
-      temp.push(currentRow);
-      set_grid([...temp]);
-    }
-    //Add Neighbors
-    for (let i = 0; i < ROWS; i++) {
-      for (let j = 0; j < COLS; j++) {
-        temp[i][j].add_neighbor(temp);
-      }
-    }
-  };
-
-  // Remove Any Path Already drawn on the Grid
-  const cleanGrid = (grid: Node[][]) => {
-    for (let row = 0; row < grid.length; row++) {
-      for (let col = 0; col < grid[row].length; col++) {
-        if (!grid[row][col].isWall) {
-          let temp = document.getElementById(`node-${row}-${col}`);
-          if (
-            grid[row][col].isStart ||
-            grid[row][col].isEnd ||
-            grid[row][col].isSpot
-          )
-            continue;
-          if (temp) temp.className = "node";
-        }
-      }
-    }
-  };
-
   React.useEffect(() => {
     set_activeBtn(1);
   }, []);
@@ -98,12 +54,12 @@ const Menu: FC<props> = ({
         >
           Select End
         </button>
-        <button
+        {/* <button
           className={`menuBtn ${checkActiveBtn(4) ? "button-active" : ""}`}
           onClick={() => set_activeBtn(4)}
         >
           Draw Wall
-        </button>
+        </button> */}
         <button
           className={`menuBtn ${checkActiveBtn(5) ? "button-active" : ""}`}
           onClick={() => set_activeBtn(5)}
@@ -111,23 +67,13 @@ const Menu: FC<props> = ({
           Add Stop
         </button>
       </div>
-      <div className="grid-actions">
-        <button
-          onClick={() => {
-            generateMap();
-          }}
-        >
-          Generate Random Map
-        </button>
-        <button onClick={() => cleanGrid(grid)}>Clean Grid</button>
-        <button
-          onClick={() => {
-            generateMap(false);
-          }}
-        >
-          Reset
-        </button>
-      </div>
+      <MazeMenu
+        end={end}
+        grid={grid}
+        set_grid={set_grid}
+        start={start}
+        set_spots={set_spots}
+      />
       <div>
         <button className="button" onClick={() => animate()}>
           Start

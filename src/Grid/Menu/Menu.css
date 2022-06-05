@@ -3,17 +3,27 @@
   grid-area: menu;
   align-content: center;
   justify-content: center;
-  gap: 2rem;
+  /* outline: 1px solid green; */
+  width: 100%;
 }
-
+.menuBtn {
+  position: relative;
+  cursor: pointer;
+  /* display: flex; */
+  flex-direction: row;
+  align-items: center;
+}
+.menuBtn:hover {
+  color: salmon;
+}
+/* .test {
+  display: flex;
+  outline: 1px solid green;
+} */
 .main-menu-container button {
   border: none;
   outline: none;
   padding: 0.75rem;
-}
-
-.main-menu-container button:hover {
-  opacity: 0.7;
 }
 
 .button-active {
@@ -21,9 +31,11 @@
   outline: none;
   background-color: salmon;
 }
+.button-active:hover {
+  color: black;
+}
 
 .button {
-  display: inline-block;
   width: 100%;
   top: 10rem;
   background-color: rgb(131, 124, 124);
@@ -37,3 +49,5 @@
   opacity: 0.7;
   cursor: pointer;
 }
+
+/* ===== Test */

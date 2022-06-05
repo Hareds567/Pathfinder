@@ -54,15 +54,21 @@ const SpotsMenu: FC<props> = ({ spots, set_spots, grid, set_grid }) => {
   };
 
   return (
-    <div className="spot-container">
-      <span className="spot-container-start">Start</span>
-      <div className="spots">
-        {spots.map((spot, idx) => {
-          return createSpot(spot, idx);
-        })}
-      </div>
-      <span className="spot-container-end">End</span>
-    </div>
+    <>
+      {spots.length > 0 ? (
+        <div className="spot-container">
+          <span className="spot-container-start">Start</span>
+          <div className="spots">
+            {spots.map((spot, idx) => {
+              return createSpot(spot, idx);
+            })}
+          </div>
+          <span className="spot-container-end">End</span>
+        </div>
+      ) : (
+        <div className="spot-container"></div>
+      )}
+    </>
   );
 };
 

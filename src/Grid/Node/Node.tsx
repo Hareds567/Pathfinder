@@ -79,19 +79,23 @@ const NodeComponent: FC<props> = ({
     }
     //Select new Start
     if (activeBtn === 2) {
+      cleanGrid(grid);
       updateNode(activeBtn);
     }
-    //Select new ENd
+    //Select new End
     if (activeBtn === 3) {
+      cleanGrid(grid);
       updateNode(activeBtn);
     }
     if (activeBtn === 4) {
     }
+    //Draw Spot
     if (activeBtn === 5) {
       if (spots.length > 2) {
         console.log("You have reached the maximum number of stops");
         return;
       }
+      cleanGrid(grid);
       let tempGuiNode = document.getElementById(`node-${node.x}-${node.y}`);
       if (tempGuiNode) tempGuiNode.className = "node node-spot";
       let tempNode = node;
@@ -101,6 +105,23 @@ const NodeComponent: FC<props> = ({
       tempGrid[node.x][node.y] = tempNode;
       set_grid([...tempGrid]);
       set_spots(tempSpots);
+    }
+  };
+
+  const cleanGrid = (grid: Node[][]) => {
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[row].length; col++) {
+        if (!grid[row][col].isWall) {
+          let temp = document.getElementById(`node-${row}-${col}`);
+          if (
+            grid[row][col].isStart ||
+            grid[row][col].isEnd ||
+            grid[row][col].isSpot
+          )
+            continue;
+          if (temp) temp.className = "node";
+        }
+      }
     }
   };
   return (

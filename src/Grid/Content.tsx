@@ -9,12 +9,18 @@ import { aStar, Results } from "./Algo/AStar";
 //CSS
 import "./Content.css";
 
-export const COLS = 30;
-export const ROWS = 40;
+export const COLS = 40;
+export const ROWS = 70;
 
 const Content = () => {
-  const [start, set_start] = React.useState([0, 0]);
-  const [end, set_end] = React.useState([ROWS - 1, COLS - 1]);
+  const [start, set_start] = React.useState([
+    Math.round(ROWS * 0.2),
+    Math.round(COLS * 0.5),
+  ]);
+  const [end, set_end] = React.useState([
+    Math.round(ROWS * 0.8),
+    Math.round(COLS * 0.5),
+  ]);
   const [grid, set_grid] = React.useState<Node[][]>([]);
 
   const [spots, set_spots] = React.useState<Node[]>([]);
@@ -54,13 +60,14 @@ const Content = () => {
       results = aStar(grid[start[0]][start[1]], spots[0]);
       tempResults = aStar(spots[0], grid[end[0]][end[1]]);
       tempResults.path.forEach((node) => {
-        if (!results.path.includes(node)) results.path.push(node);
+        results.path.push(node);
       });
       results.result.forEach((node) => {
-        if (!tempResults.result.includes(node)) tempResults.result.push(node);
+        tempResults.result.push(node);
       });
       results.result = tempResults.result;
     }
+
     //Animate Rest of Spots
     for (let i = 0; i <= spots.length - 1; i++) {
       if (i === 0) {
@@ -75,7 +82,6 @@ const Content = () => {
         let test2 = aStar(spots[i], grid[end[0]][end[1]]);
         combineResults(results, test2);
       }
-      //Combine Path
     }
 
     //Animate
@@ -118,15 +124,20 @@ const Content = () => {
 
   //Animate Suitable Path
   const animateBestPath = (path: Node[]) => {
-    for (let i = 0; i < path.length - 1; i++) {
+    const tempPath = path.reverse();
+    let path_visited = new Array<Node>();
+    for (let i = 0; i <= tempPath.length - 1; i++) {
       setTimeout(() => {
-        const node = path[i];
+        const node = tempPath[i];
         const temp = document.getElementById(`node-${node.x}-${node.y}`);
         if (temp) {
-          if (!node.isStart && !node.isEnd && !node.isSpot) {
+          if (node.isStart || node.isEnd || node.isSpot) {
+            temp.style.opacity = ".5";
+          } else {
             temp.className = "node node-path";
           }
         }
+        path_visited.push(node);
       }, 10 * i);
     }
   };
@@ -192,7 +203,9 @@ const Content = () => {
 
   return (
     <div className="content-main-container">
+      <div />
       <Menu
+        set_spots={set_spots}
         animate={animate}
         grid={grid}
         set_grid={set_grid}

@@ -1,19 +1,18 @@
 .content-main-container {
   position: relative;
-  display: grid;
-
-  grid-template-areas:
-    "spot menu  "
-    "spot grid  "
-    "spot grid  "
-    "spot grid  ";
-  gap: 2rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  border-top: 1px solid red;
 }
 
 .grid {
+  margin-top: 40px;
+  position: relative;
   display: grid;
-  grid-template-rows: repeat(25, auto);
-  grid-template-columns: repeat(40, auto);
+  grid-template-rows: repeat(40, 20px);
+  grid-template-columns: repeat(70, minmax(2px, 20px));
 }
 
 .menu-container {

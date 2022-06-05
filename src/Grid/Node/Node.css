@@ -1,8 +1,10 @@
 .node {
-  width: 25px;
-  height: 25px;
+  position: relative;
+  /* width: max(2px, 25px); */
+  max-width: 20px;
+  height: 20px;
   background-color: white;
-  outline: 1px solid rgb(175, 216, 248);
+  border: 0.5px solid rgb(175, 216, 248);
   margin: 0;
 }
 
@@ -19,13 +21,16 @@
 }
 
 .node-wall {
+  border: 0.5px solid rgb(12, 53, 71);
   background-color: rgb(12, 53, 71);
 }
 .node-visited {
-  background-color: rgb(192, 176, 30);
+  background-color: rgb(241, 229, 117);
 }
 .node-path {
-  background-color: rgb(142, 0, 170);
+  --node-path-background-color: rgb(189, 88, 209);
+  border: 0.5px solid var(--node-path-background-color);
+  background-color: var(--node-path-background-color);
 }
 .node-spot {
   background-color: rgb(97, 97, 97);
