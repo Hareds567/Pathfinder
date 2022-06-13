@@ -1,17 +1,18 @@
 .App {
   text-align: center;
   display: flex;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--third-color);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  color: white;
   overflow: hidden;
+
+  --primary-color: rgb(47, 47, 47);
+  --secondary-color: rgb(254, 111, 39);
+  --third-color: #f8f8ff;
 }
 
-.App-link {
-  color: #61dafb;
-}
 .App h1 {
-  color: rgb(114, 47, 168);
+  font-size: 2vh;
+  color: var(--third-color);
 }

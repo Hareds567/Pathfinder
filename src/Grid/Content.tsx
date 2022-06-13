@@ -22,8 +22,8 @@ const Content = () => {
     Math.round(COLS * 0.5),
   ]);
   const [grid, set_grid] = React.useState<Node[][]>([]);
-
   const [spots, set_spots] = React.useState<Node[]>([]);
+  const [isDraggable, set_isDraggable] = React.useState(0);
 
   //Animate Calculations once the algo is finished
   const animate = () => {
@@ -203,25 +203,27 @@ const Content = () => {
 
   return (
     <div className="content-main-container">
-      <div />
-      <Menu
-        set_spots={set_spots}
-        animate={animate}
-        grid={grid}
-        set_grid={set_grid}
-        start={start}
-        end={end}
-        activeBtn={activeBtn}
-        set_activeBtn={set_activeBtn}
-        checkActiveBtn={checkActiveBtn}
-      />
+      <div className="menu-main-container">
+        <h1>Pathfinder Visualizer</h1>
+        <Menu
+          set_spots={set_spots}
+          animate={animate}
+          grid={grid}
+          set_grid={set_grid}
+          start={start}
+          end={end}
+          activeBtn={activeBtn}
+          set_activeBtn={set_activeBtn}
+          checkActiveBtn={checkActiveBtn}
+        />
 
-      <SpotMenu
-        spots={spots}
-        set_spots={set_spots}
-        grid={grid}
-        set_grid={set_grid}
-      />
+        <SpotMenu
+          spots={spots}
+          set_spots={set_spots}
+          grid={grid}
+          set_grid={set_grid}
+        />
+      </div>
       <div className="grid">
         {grid.map((row, rowIdx) => {
           return (
@@ -245,6 +247,8 @@ const Content = () => {
                     isStart={node.isStart}
                     isEnd={node.isEnd}
                     activeBtn={activeBtn}
+                    isDraggable={isDraggable}
+                    set_isDraggable={set_isDraggable}
                   />
                 );
               })}

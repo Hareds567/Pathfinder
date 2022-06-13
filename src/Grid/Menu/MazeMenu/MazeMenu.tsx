@@ -1,11 +1,7 @@
 import React, { FC } from "react";
 
 import Node from "../../Algo/Node";
-import {
-  division,
-  chooseOrientation,
-  division2,
-} from "../../Algo/RecursiveDivision/RecursiveDivision";
+import { recursiveDivision as main } from "../../Algo/RecursiveDivision/RecursiveDivision";
 
 import { ChevronDown } from "react-feather";
 import { ROWS, COLS } from "../..//Content";
@@ -17,21 +13,35 @@ interface props {
   set_grid: React.Dispatch<React.SetStateAction<Node[][]>>;
   start: number[];
   end: number[];
-  set_spots: React.Dispatch<React.SetStateAction<Node[]>>;
+  isActiveDropdown: (id: number) => boolean;
+  set_activeDropdown: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const MazeMenu: FC<props> = ({ set_spots, grid, start, end, set_grid }) => {
-  const [isActive, set_isActive] = React.useState(false);
-
-  const dropDown = () => {
-    set_isActive(true);
+const MazeMenu: FC<props> = ({
+  grid,
+  start,
+  end,
+  set_grid,
+  isActiveDropdown,
+  set_activeDropdown,
+}) => {
+  //===============================================================
+  //Dropdown Methods
+  const dropDown_onClick = (id: number) => {
+    if (isActiveDropdown(id)) {
+      set_activeDropdown(0);
+      return;
+    }
+    set_activeDropdown(id);
   };
 
+  const dropDown_onBlur = () => {
+    set_activeDropdown(0);
+  };
+
+  //===============================================================
+  //Map Generation Methods
   const generateMap = (wall: boolean = true) => {
-    if (!wall) {
-      let a = new Array<Node>();
-      set_spots([...a]);
-    }
     cleanGrid(grid);
     let temp = new Array<Node[]>();
     //Create Grid without Neighbors
@@ -49,6 +59,7 @@ const MazeMenu: FC<props> = ({ set_spots, grid, start, end, set_grid }) => {
       }
       temp.push(currentRow);
       set_grid([...temp]);
+      set_activeDropdown(0);
     }
     //Add Neighbors
     for (let i = 0; i < ROWS; i++) {
@@ -56,8 +67,35 @@ const MazeMenu: FC<props> = ({ set_spots, grid, start, end, set_grid }) => {
         temp[i][j].add_neighbor(temp);
       }
     }
+    if (wall) set_activeDropdown(0);
   };
 
+  const recursiveDivision = () => {
+    const start = [grid[1][0].x, grid[1][0].y];
+    const end = [grid[grid.length - 2][0].x, grid[grid.length - 2][0].y];
+    const width = grid.length;
+    const height = grid[0].length;
+    main(start, end, width, height, grid, true);
+    // const width = grid.length - 1;
+    // const height = grid[0].length - 1;
+    // let path = division2(
+    //   grid,
+    //   width,
+    //   height,
+    //   chooseOrientation(width, height),
+    //   0,
+    //   0
+    // );
+    // // console.log("From Menu");
+    // console.log(path);
+    // path?.forEach((node) => {
+    //   let temp = document.getElementById(`node-${node.x}-${node.y}`);
+    //   if (temp) temp.className = "node node-wall";
+    // });
+  };
+
+  //===============================================================
+  //Reset Grid
   // Remove Any Path Already drawn on the Grid
   const cleanGrid = (grid: Node[][]) => {
     for (let row = 0; row < grid.length; row++) {
@@ -74,69 +112,93 @@ const MazeMenu: FC<props> = ({ set_spots, grid, start, end, set_grid }) => {
         }
       }
     }
-  };
-
-  const recursiveDivision = () => {
-    // const width = grid.length - 1;
-    // const height = grid[0].length - 1;
-    // let path = division2(
-    //   grid,
-    //   width,
-    //   height,
-    //   chooseOrientation(width, height),
-    //   0,
-    //   0
-    // );
-    // // console.log("From Menu");
-    // // console.log(path);
-    // path?.forEach((node) => {
-    //   let temp = document.getElementById(`node-${node.x}-${node.y}`);
-    //   if (temp) temp.className = "node node-wall";
-    // });
+    set_activeDropdown(0);
   };
 
   return (
     <div className="grid-actions">
-      <div className="dropdown">
+      <div
+        className={`dropdown ${isActiveDropdown(1) ? "active-dropdown" : ""}`}
+        onBlur={() => {
+          dropDown_onBlur();
+        }}
+        data-dropdown
+      >
         <button
-          data-dropdown
+          data-dropdown-button
           className={`menuBtn dropdown-header`}
           onClick={() => {
-            dropDown();
+            dropDown_onClick(1);
           }}
         >
           Maze Generation <ChevronDown size={"15px"} />
         </button>
+
         <div className="dropdown-menu">
-          <div
+          <button
             className={"dropdown-menu-link"}
+            onMouseDown={(e) => {
+              e.preventDefault();
+            }}
             onClick={() => {
               generateMap();
             }}
           >
             <span>Random</span>
-          </div>
-          <div
+          </button>
+          <button
             className={"dropdown-menu-link"}
+            onMouseDown={(e) => {
+              e.preventDefault();
+            }}
             onClick={() => {
               recursiveDivision();
             }}
           >
             <span>Recursive Division</span>
-          </div>
+          </button>
         </div>
       </div>
-      <button className="menuBtn" onClick={() => cleanGrid(grid)}>
-        Clean Path
-      </button>
-      <button
-        className="menuBtn"
-        onClick={() => {
-          generateMap(false);
+      {/* //===================================== */}
+      <div
+        className={`dropdown ${isActiveDropdown(2) ? "active-dropdown" : ""}`}
+        onBlur={() => {
+          dropDown_onBlur();
         }}
+        data-dropdown
       >
-        Reset
-      </button>
+        <button
+          data-dropdown-button
+          className={`menuBtn dropdown-header`}
+          onClick={() => {
+            dropDown_onClick(2);
+          }}
+        >
+          Clear <ChevronDown size={"15px"} />
+        </button>
+        <div className="dropdown-menu">
+          <button
+            className="dropdown-menu-link"
+            onMouseDown={(e) => {
+              e.preventDefault();
+            }}
+            onClick={() => {
+              generateMap(false);
+            }}
+          >
+            Clear Walls
+          </button>
+          <button
+            className="dropdown-menu-link"
+            onMouseDown={(e) => {
+              e.preventDefault();
+            }}
+            onClick={() => cleanGrid(grid)}
+          >
+            Clear Path
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

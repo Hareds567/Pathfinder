@@ -1,4 +1,6 @@
 import React, { FC } from "react";
+import { MousePointer } from "react-feather";
+import { Plus } from "react-feather";
 //Components
 import MazeMenu from "./MazeMenu/MazeMenu";
 //Classes
@@ -33,6 +35,12 @@ const Menu: FC<props> = ({
     set_activeBtn(1);
   }, []);
 
+  const [activeDropdown, set_activeDropdown] = React.useState(0);
+  const isActiveDropdown = (id: number) => {
+    if (id === activeDropdown) return true;
+    return false;
+  };
+
   return (
     <div className="main-menu-container">
       <div className="active-buttons">
@@ -40,7 +48,7 @@ const Menu: FC<props> = ({
           className={`menuBtn ${checkActiveBtn(1) ? "button-active" : ""}`}
           onClick={() => set_activeBtn(1)}
         >
-          Pointer
+          <MousePointer size="12px" />
         </button>
         <button
           className={`menuBtn ${checkActiveBtn(2) ? "button-active" : ""}`}
@@ -72,7 +80,8 @@ const Menu: FC<props> = ({
         grid={grid}
         set_grid={set_grid}
         start={start}
-        set_spots={set_spots}
+        isActiveDropdown={isActiveDropdown}
+        set_activeDropdown={set_activeDropdown}
       />
       <div>
         <button className="button" onClick={() => animate()}>

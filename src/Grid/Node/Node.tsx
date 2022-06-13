@@ -19,6 +19,8 @@ interface props {
   set_grid: React.Dispatch<React.SetStateAction<Node[][]>>;
   spots: Node[];
   set_spots: React.Dispatch<React.SetStateAction<Node[]>>;
+  isDraggable: number;
+  set_isDraggable: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const NodeComponent: FC<props> = ({
@@ -37,6 +39,8 @@ const NodeComponent: FC<props> = ({
   set_end,
   spots,
   set_spots,
+  isDraggable,
+  set_isDraggable,
 }) => {
   const className = isEnd
     ? "node-end"
@@ -107,7 +111,66 @@ const NodeComponent: FC<props> = ({
       set_spots(tempSpots);
     }
   };
+  //==========================================================
+  //Drag and hold events
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    // console.log(node.isStart);
+    console.log(node.x, node.y);
+    if (node.isStart || node.isEnd) {
+      let currentNode = document.getElementById(`node-${node.x}-${node.y}`);
+      let currentNodeObj = node;
+      let tempGrid = grid;
+      currentNodeObj.isStart ? set_isDraggable(1) : set_isDraggable(2);
+      currentNodeObj.isStart
+        ? (currentNodeObj.isStart = false)
+        : (currentNodeObj.isEnd = false);
+      tempGrid[currentNodeObj.x][currentNodeObj.y] = currentNodeObj;
+      currentNode?.classList.add("node-drag");
+      set_grid([...tempGrid]);
+    }
+  };
 
+  const onMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    if (isDraggable != 0) {
+      let currentNode = document.getElementById(`node-${node.x}-${node.y}`);
+      let currentNodeObj = node;
+      let tempGrid = grid;
+      isDraggable === 1
+        ? (currentNodeObj.isStart = true)
+        : (currentNodeObj.isEnd = true);
+      tempGrid[currentNodeObj.x][currentNodeObj.y] = currentNodeObj;
+      currentNode?.classList.remove("node-drag");
+      set_grid([...tempGrid]);
+      isDraggable === 1
+        ? set_start([node.x, node.y])
+        : set_end([node.x, node.y]);
+      set_isDraggable(0);
+    }
+  };
+  const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    if (isDraggable != 0 && !node.isWall) {
+      let currentNode = document.getElementById(`node-${node.x}-${node.y}`);
+      currentNode?.classList.add("node-drag");
+      isDraggable === 1
+        ? currentNode?.classList.add("node-start")
+        : currentNode?.classList.add("node-end");
+    }
+  };
+  const onMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    if (isDraggable != 0 && !node.isWall) {
+      let currentNode = document.getElementById(`node-${node.x}-${node.y}`);
+      currentNode?.classList.remove("node-drag");
+      isDraggable === 1
+        ? currentNode?.classList.remove("node-start")
+        : currentNode?.classList.remove("node-end");
+    }
+  };
+
+  //===================================================
   const cleanGrid = (grid: Node[][]) => {
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[row].length; col++) {
@@ -129,6 +192,10 @@ const NodeComponent: FC<props> = ({
       className={`node ${className}`}
       id={`node-${row}-${col}`}
       onClick={() => onClick()}
+      onMouseDown={(e) => onMouseDown(e)}
+      onMouseUp={(e) => onMouseUp(e)}
+      onMouseEnter={(e) => onMouseEnter(e)}
+      onMouseLeave={(e) => onMouseLeave(e)}
     ></div>
   );
 };
